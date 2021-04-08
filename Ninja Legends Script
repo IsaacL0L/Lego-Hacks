@@ -1,0 +1,151 @@
+_G.Swing = true -- SET TO FALSE TO STOP SWINGING
+_G.Sell = true -- SET TO FALSE TO STOP SELLING NINJUTSU
+_G.UnlockAllIslands = true -- SET TO FALSE TO SKIP UNLOCKING ALL ISLANDS
+_G.BuyAllSwords = true -- SET TO FALSE TO STOP FROM BUYING ALL SWORDS
+_G.BuyAllBelts = true -- SET TO FALSE TO STOP FROM BUYING ALL BELTS
+_G.BuyAllSkills = true -- SET TO FALSE TO STOP FROM BUYING ALL SKILLS
+_G.BuyAllRanks = true -- SET TO FALSE TO STOP FROM BUYING ALL RANKS
+_G.MaxOutJumpCount = true -- SET TO FALSE TO NOT MAX OUT JUMP COUNT
+_G.FarmHoops = true -- SET TO FALSE TO NOT FARM HOOPS
+function enableScript()
+    if _G.Farm then
+    	game:GetService("Players").LocalPlayer.Idled:connect(function()
+    		game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    		wait(1)
+    		game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    	end)
+    	if _G.UnlockAllIslands then
+    		cframepos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    		islands = {"Enchanted Island", "Astral Island", "Mystical Island", "Space Island", "Tundra Island", "Sandstorm", "Ancient Inferno Island", "Thunderstorm", "Eternal Island", "Soul Fusion Island", "Cybernetic Legends Island", "Mythical Souls Island", "Winter Wonder Island", "Dragon Legend Island", "Golden Master Island", "Midnight Shadow Island", "Skystorm Ultraus Island", "Chaos Legends Island", "Dark Elements Island", "Inner Peace Island"}
+    		for i = 1, #islands do
+    			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").islandUnlockParts[islands[i]].CFrame
+    			wait(.1)
+    		end
+    		wait(1)
+    		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(cframepos)
+    	end
+    	if _G.Sell then
+    		game.workspace["sellAreaCircles"].sellAreaCircle.circleFakeInner.Transparency = 1
+    		game.workspace["sellAreaCircles"].sellAreaCircle.circleInner.Transparency = 1
+    	end
+    	if _G.Swing then
+    		for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+    			if v.ClassName == "Tool" and v:FindFirstChild("attackKatanaScript") then
+    				game.Players.LocalPlayer.Character.Humanoid:EquipTool(v)                            
+    			end
+    		end
+    	end
+    	while _G.Farm do
+    		wait()
+    		if _G.Swing then
+    			game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("swingKatana")
+    		end
+    		if _G.Sell then
+    			game.workspace["sellAreaCircles"].sellAreaCircle.circleFakeInner.CFrame = CFrame.new(0,0,0)
+    			game.workspace["sellAreaCircles"].sellAreaCircle.circleInner.CFrame = CFrame.new(0,0,0)
+    			wait(0.01)
+    			game.workspace["sellAreaCircles"].sellAreaCircle.circleFakeInner.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+    			game.workspace["sellAreaCircles"].sellAreaCircle.circleInner.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+    		end
+    		if _G.BuyAllSwords then
+    			game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("buyAllSwords", "Dark Elements Island")
+    		end
+    		if _G.BuyAllBelts then
+    			game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("buyAllBelts", "Dark Elements Island")
+    		end
+    		if _G.BuyAllSkills then
+    			game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("buyAllSkills", "Dark Elements Island")
+    		end
+    		if _G.MaxOutJumpCount then
+    			game.Players.LocalPlayer.multiJumpCount.Value = 50 -- 50 IS THE LIMIT
+    		end
+    		if _G.BuyAllRanks then
+    			item = game:GetService("ReplicatedStorage").Ranks.Ground:GetChildren()
+    			for i = 1, #item do
+    				game:GetService("Players").LocalPlayer.ninjaEvent:FireServer("buyRank", item[i].Name)
+    			end
+    		end
+    		if _G.FarmHoops then
+    			for i = 1, #workspace.Hoops:getChildren() do
+    				workspace.Hoops:getChildren()[i].touchPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+    			end
+    		end
+    	end
+    end
+end
+local MainGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local CheatFrame = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local TextButton = Instance.new("TextButton")
+local TopFrame = Instance.new("Frame")
+local TitleLabel = Instance.new("TextLabel")
+MainGui.Name = "MainGui"
+MainGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+MainGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+MainGui.ResetOnSpawn = false
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = MainGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+MainFrame.BorderSizePixel = 0
+MainFrame.Position = UDim2.new(0.435400426, 0, 0.443488896, 0)
+MainFrame.Size = UDim2.new(0, 209, 0, 92)
+MainFrame.Draggable = true
+MainFrame.Active = true
+MainFrame.Selectable = true
+CheatFrame.Name = "CheatFrame"
+CheatFrame.Parent = MainFrame
+CheatFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CheatFrame.BackgroundTransparency = 1.000
+CheatFrame.BorderSizePixel = 0
+CheatFrame.Position = UDim2.new(0.174355537, 0, 0.443778008, 0)
+CheatFrame.Size = UDim2.new(0, 134, 0, 38)
+TextLabel.Parent = CheatFrame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.7891801, 0, 0.0795892179, 0)
+TextLabel.Size = UDim2.new(0, 26, 0, 30)
+TextLabel.Font = Enum.Font.Roboto
+TextLabel.Text = "OFF"
+TextLabel.TextColor3 = Color3.fromRGB(255, 106, 108)
+TextLabel.TextSize = 14.000
+TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+TextButton.Parent = CheatFrame
+TextButton.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+TextButton.BorderColor3 = Color3.fromRGB(20, 20, 20)
+TextButton.BorderSizePixel = 0
+TextButton.Position = UDim2.new(0.0409558304, 0, 0.0795890391, 0)
+TextButton.Size = UDim2.new(0, 92, 0, 30)
+TextButton.Font = Enum.Font.Roboto
+TextButton.Text = "Enable Script"
+TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.TextSize = 14.000
+TextButton.MouseButton1Click:Connect(function()
+	if _G.Farm then
+		_G.Farm = false
+		TextLabel.Text = "OFF"
+		TextLabel.TextColor3 = Color3.fromRGB(255, 106, 108)
+	else
+		_G.Farm = true
+		TextLabel.Text = "ON"
+		TextLabel.TextColor3 = Color3.fromRGB(46, 204, 113)
+		enableScript()
+	end
+end)
+TopFrame.Name = "TopFrame"
+TopFrame.Parent = MainFrame
+TopFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+TopFrame.BorderSizePixel = 0
+TopFrame.Size = UDim2.new(0, 209, 0, 33)
+TitleLabel.Name = "TitleLabel"
+TitleLabel.Parent = TopFrame
+TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.BackgroundTransparency = 1.000
+TitleLabel.BorderColor3 = Color3.fromRGB(27, 42, 53)
+TitleLabel.Size = UDim2.new(0, 208, 0, 33)
+TitleLabel.Font = Enum.Font.Roboto
+TitleLabel.Text = "Snipcola - Ninja Legends"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.TextSize = 14.000
+
